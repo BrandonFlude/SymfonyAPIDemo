@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-    {% include '/user/head.html.twig' %}
+    {% include '/base/head.html.twig' %}
     </head>
     <body>
         <h1>Members</h1>
@@ -13,6 +13,8 @@
           <br>
           Username: {{ user.username }}
           <br>
+          Password: {{ user.password }}
+          <br>
           Email Address: {{ user.emailaddress }}
           <br>
           Lucky Number: {{ user.luckynumber }}
@@ -20,4 +22,5 @@
         <hr>
         {% endfor %}
     </body>
+    {% include '/base/foot.html.twig' %}
 </html>

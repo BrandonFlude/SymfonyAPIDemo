@@ -10,11 +10,33 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
-    public function getCSS()
+    public function login_auth(): Response
     {
-      // Some logic in here is possible to determine what CSS to use. Front end team then just have to include css
-      $css = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css";
-      return $css;
+      if(empty($_POST["username"]) || empty($_POST["password"])) {
+        return new Response('<h3>You must provide a username and a password in your POST request to login.</h3>');
+      } else {
+        // Both fields passed through - now authenticate
+        $entityManager = $this->getDoctrine()->getRepository(User::class);
+        $user = $entityManager->findOneBy([
+          'username' => $_POST["username"],
+          'password' => $_POST["password"],
+        ]);
+
+        if (!$user) {
+          return new Response(
+            'No user found for username: '.$_POST["username"].' and password: '.$_POST["password"].'.'
+          );
+        } else {
+          return new Response(
+            'Logged in! Your ID is: '.$user->getId().' and your lucky number is: '.$user->getLuckyNumber().'.'
+          );
+        }
+      }
+    }
+
+    public function login()
+    {
+      return $this->render('login/login.html.twig');
     }
 
     public function allUsers()
@@ -24,12 +46,6 @@ class UserController extends AbstractController
         $users = $entityManager->getRepository(User::class)->findAll();
 
         // Display Results on twig
-        /*
-        return $this->render('user/users.html.twig', [
-            'css' => $this->getCSS(),
-            array('users'=>$users),
-        ]);
-        */
         return $this->render('user/users.html.twig', array('users'=>$users));
     }
 
@@ -38,15 +54,17 @@ class UserController extends AbstractController
         // Get data passed in through POST Request
 
         // Mandatory params
-        if(empty($_POST["username"])) {
-          return new Response('<h3>You must provide at least a username in your POST request.</h3>');
+        if(empty($_POST["username"]) || empty($_POST["password"])) {
+          return new Response('<h3>You must provide at least a username and a password in your POST request.</h3>');
         } else {
           $username = $_POST["username"];
+          $password = $_POST["password"]; // In reality, this would be encrypted but it isn't for demo
           $email_address = $_POST["email_address"] ?? 'null';
           $lucky_number = $_POST["lucky_number"] ?? 0;
 
           $user = new User();
           $user->setUsername($username);
+          $user->setPassword($password);
           $user->setEmailAddress($email_address);
           $user->setLuckyNumber($lucky_number);
 
@@ -79,9 +97,9 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/user.html.twig', [
-            'css' => $this->getCSS(),
             'userid' => $user->getId(),
             'username' => $user->getUsername(),
+            'password' => $user->getPassword(),
             'email_address' => $user->getEmailAddress(),
             'lucky_number' => $user->getLuckyNumber(),
         ]);

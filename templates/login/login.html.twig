@@ -1,0 +1,47 @@
+{# templates/login/login.html.twig #}
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include '/base/head.html.twig' %}
+    </head>
+    <body>
+      <div ng-app="">
+        {% verbatim %}
+        <h1>Welcome back {{username}}</h1>
+        {% endverbatim %}
+        <form id="login">
+          <label>Username:</label>
+          <input type="text" ng-model="username" id="username" name="password" placeholder="Username">
+
+          <label>Password:</label>
+          <input type="password" ng-model="password" id="password" name="password" placeholder="Password">
+          Hide Password: <input type="checkbox" ng-model="passwordDisplay">
+
+          <div ng-hide="passwordDisplay">
+            {% verbatim %}
+            <pre>{{password}}</pre>
+            {% endverbatim %}
+          </div>
+
+          <input type="submit" name="Login">
+        </form>
+      </div>
+    </body>
+      {% include '/base/foot.html.twig' %}
+      <script type="text/javascript">
+          $('#login').submit(function(event) {
+              $.ajax({
+                  type:'POST',
+                  url:'/login/auth/',
+                  data: {
+                       username: $('#username').val(),
+                       password: $('#password').val()
+                  },
+                  success:function(response){
+                      alert(response)
+                  }
+              });
+              event.preventDefault();
+          });
+      </script>
+</html>

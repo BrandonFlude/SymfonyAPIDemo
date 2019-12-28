@@ -2,9 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>User Display Page</title>
-        <link href="{{ asset(css) }}" rel="stylesheet">
+        {% include '/base/head.html.twig' %}
     </head>
     <body>
         <h1>
@@ -12,9 +10,12 @@
           <br>
           Username: {{ username }}
           <br>
+          Password: {{ password }}
+          <br>
           Email Address: {{ email_address }}
           <br>
           Lucky Number: {{ lucky_number }}
         </h1>
     </body>
+      {% include '/base/foot.html.twig' %}
 </html>

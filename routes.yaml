@@ -13,3 +13,11 @@ app_create_user:
 app_all_users:
     path: /users/
     controller: App\Controller\UserController::allUsers
+
+app_login_auth:
+    path: /login/auth/
+    controller: App\Controller\UserController::login_auth
+
+app_login:
+    path: /login/
+    controller: App\Controller\UserController::login
