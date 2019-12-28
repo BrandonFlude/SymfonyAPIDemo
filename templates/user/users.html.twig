@@ -1,0 +1,23 @@
+{# templates/user/user.html.twig #}
+
+<!DOCTYPE html>
+<html>
+    <head>
+    {% include '/user/head.html.twig' %}
+    </head>
+    <body>
+        <h1>Members</h1>
+        {% for user in users %}
+        <h2>
+          User ID: {{ user.id }}
+          <br>
+          Username: {{ user.username }}
+          <br>
+          Email Address: {{ user.emailaddress }}
+          <br>
+          Lucky Number: {{ user.luckynumber }}
+        </h2>
+        <hr>
+        {% endfor %}
+    </body>
+</html>

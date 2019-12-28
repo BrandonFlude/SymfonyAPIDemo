@@ -10,17 +10,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends AbstractController
 {
-
-    public function ENV() {
-      $dotenv = new Dotenv();
-      $dotenv->loadEnv(__DIR__.'/.env');
-    }
-
     public function getCSS()
     {
       // Some logic in here is possible to determine what CSS to use. Front end team then just have to include css
       $css = "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css";
       return $css;
+    }
+
+    public function allUsers()
+    {
+        // Display all users
+        $entityManager = $this->getDoctrine()->getManager();
+        $users = $entityManager->getRepository(User::class)->findAll();
+
+        // Display Results on twig
+        /*
+        return $this->render('user/users.html.twig', [
+            'css' => $this->getCSS(),
+            array('users'=>$users),
+        ]);
+        */
+        return $this->render('user/users.html.twig', array('users'=>$users));
     }
 
     public function createUser(): Response
@@ -35,17 +45,18 @@ class UserController extends AbstractController
           $email_address = $_POST["email_address"] ?? 'null';
           $lucky_number = $_POST["lucky_number"] ?? 0;
 
-          $entityManager = $this->getDoctrine()->getManager();
-
           $user = new User();
           $user->setUsername($username);
           $user->setEmailAddress($email_address);
           $user->setLuckyNumber($lucky_number);
 
-          // tell Doctrine you want to (eventually) save the Product (no queries yet)
+          // Create entity manager instance
+          $entityManager = $this->getDoctrine()->getManager();
+
+          // Tell Doctrine I want to save this data
           $entityManager->persist($user);
 
-          // actually executes the queries (i.e. the INSERT query)
+          // Execute all stored queries in persist
           $entityManager->flush();
 
           return new Response(
@@ -57,8 +68,6 @@ class UserController extends AbstractController
 
     public function showUser($id)
     {
-        $this->ENV();
-
         $user = $this->getDoctrine()
             ->getRepository(User::class)
             ->find($id);
