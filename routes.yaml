@@ -3,5 +3,13 @@
 #    controller: App\Controller\DefaultController::index
 # the "app_lucky_number" route name is not important yet
 app_user:
-    path: /user/display
-    controller: App\Controller\UserController::display
+    path: /user/{id}
+    controller: App\Controller\UserController::showUser
+
+app_create_user:
+    path: /user/
+    controller: App\Controller\UserController::createUser
+
+app_all_users:
+    path: /users/
+    controller: App\Controller\UserController::allUsers
