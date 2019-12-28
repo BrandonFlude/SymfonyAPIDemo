@@ -32,8 +32,8 @@ class UserController extends AbstractController
           return new Response('<h3>You must provide at least a username in your POST request.</h3>');
         } else {
           $username = $_POST["username"];
-          $email_address = !empty($_POST["email_address"]) ?: 'null';
-          $lucky_number = !empty($_POST["lucky_number"]) ?: 0;
+          $email_address = $_POST["email_address"] ?? 'null';
+          $lucky_number = $_POST["lucky_number"] ?? 0;
 
           $entityManager = $this->getDoctrine()->getManager();
 
