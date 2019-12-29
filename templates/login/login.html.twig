@@ -5,26 +5,32 @@
         {% include '/base/head.html.twig' %}
     </head>
     <body>
-      <div ng-app="">
-        {% verbatim %}
-        <h1>Welcome back {{username}}</h1>
-        {% endverbatim %}
-        <form id="login">
-          <label>Username:</label>
-          <input type="text" ng-model="username" id="username" name="password" placeholder="Username">
+      <div class="container">
+        <div ng-app="">
+          {% verbatim %}
+          <h1>Welcome back {{username}}</h1>
+          {% endverbatim %}
+          <form id="login">
+            <div class="form-group">
+              <label>Username:</label>
+              <input type="text" class="form-control" ng-model="username" id="username" name="password" placeholder="Username">
+            </div>
+            <div class="form-group">
+              <label>Password:</label>
+              <input type="password" class="form-control" ng-model="password" id="password" name="password" placeholder="Password">
+              <div ng-hide="passwordDisplay">
+                {% verbatim %}
+                <pre>{{password}}</pre>
+                {% endverbatim %}
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="checkbox" ng-model="passwordDisplay"> Hide Password
+            </div>
 
-          <label>Password:</label>
-          <input type="password" ng-model="password" id="password" name="password" placeholder="Password">
-          Hide Password: <input type="checkbox" ng-model="passwordDisplay">
-
-          <div ng-hide="passwordDisplay">
-            {% verbatim %}
-            <pre>{{password}}</pre>
-            {% endverbatim %}
-          </div>
-
-          <input type="submit" name="Login">
-        </form>
+            <input type="submit" class="btn btn-block btn-primary" name="Login">
+          </form>
+        </div>
       </div>
     </body>
       {% include '/base/foot.html.twig' %}
